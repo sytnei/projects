@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %} 
+      <div class="container">
+      <br /><br /><br /><br /><br />
+        <h1>Projects List!</h1>
+        <p>Here are located your Company Projects</p>
+        
+        	{% for item in projects %}
+             <hr />
+             <h2>{{ item.id }}. {{ item.name }}</h2>
+             <a href="{{ url('app_projects_documents', { 'slug': item.slug }) }}">see details</a>
+            {% endfor %}
+            
+      </div>
+    </div>
+{% endblock %}
+ 

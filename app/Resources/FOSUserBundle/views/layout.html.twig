@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+        	<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+        	<link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}" />
+        	<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+     <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project Management System</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+        {{ path('fos_user_security_logout') }}
+        {% if app.user %}
+		    <a href="{{ path('fos_user_security_logout') }}" class="btn btn-success pull-right" style="margin:4px 0 0 0">Log Out</a>
+		{% else %}
+		    <a href="{{ path('fos_user_security_login') }}" class="btn btn-success pull-right" style="margin:4px 0 0 0">Sign in</a>
+		{% endif %}
+        
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+        <div>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                <a href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
+            {% else %}
+                <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+            {% endif %}
+        </div>
+
+        {% for type, messages in app.session.flashBag.all %}
+            {% for message in messages %}
+                <div class="{{ type }}">
+                    {{ message|trans({}, 'FOSUserBundle') }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div>
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+        </div>
+      <hr>
+
+      <footer>
+        <p><center>&copy; 2016 Project Management</center></p>
+      </footer>
+    </div> <!-- /container -->
+
+        {% block javascripts %}
+            <script src="{{ asset('assets/js/jquery-3.1.0.js') }}"></script>
+        	<script src="{{ asset('assets/js/modernizr.js') }}"></script>
+        	<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        	
+        {% endblock %}
+    </body>
+</html>
